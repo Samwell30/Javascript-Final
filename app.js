@@ -1,45 +1,39 @@
-const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const output = document.getElementById('output');
-
-searchButton.addEventListener('click', function(event) {
-  searchMovie(event);
-});
-
 async function searchMovie() {
-  const movieTitle = searchInput.value.trim();
-  if (movieTitle === "") {
-    return;
-  }
-
-  const apiKey = 'c611180b';
-  const url = `https://www.omdbapi.com/?s=${encodeURIComponent(movieTitle)}&apikey=${apiKey}`;
-
-    output.innerHTML = ""; 
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.Response === "True") {
-      const movies = data.Search;
-      output.innerHTML = `
-        <div class="movie-grid">
-          ${movies.map(movie => `
-            <div class="movie-card">
-              <img class="movie-poster" src="${movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200x300?text=No+Image"}" alt="${movie.Title}">
-              <h3 class="movie-title">${movie.Title}</h3>
-              <p class="movie-year">Year: ${movie.Year}</p>
+    const searchInput = document.getElementById('searchInput');
+    const output = document.getElementById('output');
+    const loading = document.getElementById('loading');
+    const movieTitle = searchInput.value.trim();
+  
+    if (movieTitle === "") {
+      output.innerHTML = "<p>Please enter a movie title.</p>";
+      return;
+    }
+  
+    loading.style.display = 'block';
+    output.innerHTML = "";
+  
+      const response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(movieTitle)}&apikey=c611180b`);
+      const data = await response.json();
+  
+      setTimeout(() => {
+        loading.style.display = 'none';
+  
+        if (data.Response === "True") {
+          output.innerHTML = `
+            <div class="movie-grid">
+              ${data.Search.map(movie => `
+                <div class="movie-card">
+                  <img src="${movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200x300?text=No+Image"}">
+                  <h3>${movie.Title}</h3>
+                  <p>Year: ${movie.Year}</p>
+                </div>
+              `).join('')}
             </div>
-          `).join('')}
-        </div>
-      `;
-    } else {
-      output.innerHTML = `
-        <div class="movie-not-found">
-          <h2>No movies found for "<em>${movieTitle}</em>"</h2>
-          <p>Please try a different keyword.</p>
-        </div>
-      `;
-    } 
-}
-
+          `;
+        } else {
+          output.innerHTML = `<p>No movies found for "<em>${movieTitle}</em>".</p>`;
+        }
+        loading.style.display = 'none';
+      }, 1000);    
+  }
+  

@@ -29,15 +29,14 @@
     <section>
         <div class="container">
           <h1 class="title">The quick and Easy movie finder</h1>
-          <h2 class="sub-title">Click the search and type a key word</h2>
+          <h2 class="sub-title">Type a keyword and search</h2>
           <div class="input__wrapper">
-            <input type="text" id="searchInput" placeholder="Search for a movie">
-            <button id="searchButton">Search</button>
+            <input type="text" id="searchInput" placeholder="Search for a movie" onchange="searchMovie()">
+             <button id="searchButton">Search</button>
             </div>
             <div id="loading" style="display: none;">Loading...</div>          
           <div id="output">Movie info will appear here....</div>
         </div>
-      </section>
-      
+      </section>      
       </body>
 </html>
