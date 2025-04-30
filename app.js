@@ -6,11 +6,6 @@ let currentMovies = []; // added this var to hold the movie data
     const loading = document.getElementById('loading');
     const movieTitle = searchInput.value.trim();
 
-    if (movieTitle === "") {
-      output.innerHTML = "<p>Please enter a movie title.</p>";
-      return;
-}
-
     loading.style.display = 'block';
     output.innerHTML = "";
 
@@ -24,6 +19,7 @@ let currentMovies = []; // added this var to hold the movie data
         currentMovies = data.Search; 
         renderMovies(currentMovies);
       } else {
+        currentMovies = [];
         output.innerHTML = `<p>No movies found for "<em>${movieTitle}</em>".</p>`;
       }
     }, 1000);
@@ -36,8 +32,8 @@ function renderMovies(movies) {
         <div class="sort-container">
           <select id="filter" onchange="sortMovies()">
             <option value="" disabled selected>Sort</option>
-            <option value="LOW_TO_HIGH">Year, Low to High</option>
-            <option value="HIGH_TO_LOW">Year, High to Low</option>
+            <option value="LOW_TO_HIGH">Oldest to Newest</option>
+            <option value="HIGH_TO_LOW">Newest to Oldest</option>
           </select>
         </div>
         <div class="movie-grid">
